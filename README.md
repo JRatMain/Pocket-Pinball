@@ -1,2 +1,2 @@
-# web-ball
-web-based pinball application
+# Pocket Pinball
+A web-based pinball application.
