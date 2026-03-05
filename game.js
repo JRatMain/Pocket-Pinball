@@ -22,13 +22,32 @@ var bumperF = Bodies.circle(350, 600, 40, {isStatic: true});
 var bumperG = Bodies.circle(550, 700, 40, {isStatic: true}); 
 var bumperH = Bodies.circle(150, 700, 40, {isStatic: true});
 
+// borders declaration
+var borderL = Bodies.rectangle(0, 512, 30, 1024, {isStatic: true});
+var borderR = Bodies.rectangle(800, 512, 30, 1024, {isStatic: true});
+var chuteBorderL = Bodies.rectangle(700, 700, 10, 1024, {isStatic: true});
+var trianAngle = Bodies.fromVertices(752, 25, [{x:0, y:0}, {x: 100, y:0}, {x:100, y:100}], {isStatic: true})
+
+// physics arrays
 physicsObjs = [
     bumperA,bumperB,bumperC,
     bumperD,bumperE,bumperF,
     bumperG,bumperH
 ]
 
+// borders arrays
+walls = [
+    borderL, borderR, chuteBorderL,
+    trianAngle
+]
+
+// Array that holds the launching mechanism for balls
+launchMech = [
+
+]
+
 Composite.add(engine.world, physicsObjs); 
+Composite.add(engine.world, walls);
 
 Matter.Render.setSize(render, 800, 1024); // method to change render window size 
 
