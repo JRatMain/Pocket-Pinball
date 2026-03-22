@@ -5,20 +5,25 @@ function Ball(x, y, r, options, color = 255) {
     restitution: 0.8,
     angle: Math.PI
   }
+    //creates matter.js Circle
     this.body = Bodies.circle(x, y, r, options);
     this.r = r;
+    
+    // adds object to the world object
     World.add(world, this.body);
     
+    // function specific to this object to integrate p5 into the matter.js object
     this.show = function() {
-        var pos = this.body.position;
+        // this sets the p5 position and angle to the matter.js positions and angles
+        var pos = this.body.position; 
         var angle = this.body.angle;
         
         push();
         stroke(200);
         strokeWeight(2);
-        fill(color);
-        translate(pos.x, pos.y);
-        rotate(angle);
+        fill(color); // color variable allows for different colors to easily be added in
+        translate(pos.x, pos.y); // tracks x and y position of matter.js and moves p5 object so the image matches
+        rotate(angle); // controls p5 rotation
         ellipse(0, 0, this.r * 2);
         pop();
 
@@ -33,19 +38,24 @@ function Bumpers(x, y, r, color = 255) {
     restitution: 0.8,
     angle: Math.PI
   }
+    //creates matter.js Circle and is set to static
     this.body = Bodies.circle(x, y, r, {isStatic: true});
     this.r = r;
+
+    // adds object to the world object
     World.add(world, this.body);
     
+    // function specific to this object to integrate p5 into the matter.js object
     this.show = function() {
+        // this sets the p5 position and angle to the matter.js positions and angles
         var pos = this.body.position;
         var angle = this.body.angle;
         
         push();
         stroke(200);
         strokeWeight(2);
-        fill(color);
-        translate(pos.x, pos.y);
+        fill(color); // color variable allows for different colors to easily be added in
+        translate(pos.x, pos.y); // tracks x and y position of matter.js and moves p5 object so the image matches
         rotate(angle);
         ellipse(0, 0, this.r * 2);
         pop();
@@ -76,7 +86,7 @@ function modRectangle(x, y, w, h, options) {
         stroke(200);
         strokeWeight(2);
         fill(0, 255, 255, 100);
-        translate(pos.x, pos.y);
+        translate(pos.x, pos.y); // tracks x and y position of matter.js and moves p5 object so the image matches
         rotate(angle);
         rect(0, 0, this.w, this.h);
         pop();
@@ -104,8 +114,8 @@ function staticRect(x, y, w, h, options, color = 255) {
         push();
         stroke(200);
         strokeWeight(2);
-        fill(color);
-        translate(pos.x, pos.y);
+        fill(color); // color variable allows for different colors to easily be added in
+        translate(pos.x, pos.y); // tracks x and y position of matter.js and moves p5 object so the image matches
         rotate(angle);
         rect(0, 0, this.w, this.h);
         pop();
@@ -129,8 +139,8 @@ function staticTriangle(x1, y1, x2, y2, x3, y3, color) {
         push();
         stroke(200);
         strokeWeight(2);
-        fill(color);
-        triangle(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3);
+        fill(color); // color variable allows for different colors to easily be added in
+        triangle(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3); 
         pop();
     } 
 }
