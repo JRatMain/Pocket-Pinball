@@ -15,7 +15,35 @@ var walls = [];
 var ground;
 var staticObj = {isStatic: true}
 var gameball;
+var constrainCenter;
+var mConstraint;
 
+// Function to recreate constraint every time the ball is lost
+function createConstraint() {
+  constrainCenter = new ConstraintOrb(550, 450, 30);
+  gameball = new Ball(500, 500, 30);
+  
+  var constraintOptions = {
+    bodyA: constrainCenter.body,
+    bodyB: gameball.body,
+    length: 10,
+    stiffness: 0.6
+  }
+
+  var constraint = Constraint.create(constraintOptions);
+  World.add(world, constraint);
+
+}
+
+function createMouseConstrain() {
+  var canvasmouse = Mouse.create(canvas.elt); //creates an object mouse that can interact with the canvas
+  canvasmouse.pixelRatio = pixelDensity();
+  var options = {
+    mouse: canvasmouse
+  }
+  mConstraint = MouseConstraint.create(engine, options);
+  World.add(world, mConstraint);
+}
 
 function setup() {
   createCanvas(800, 1024);
@@ -29,19 +57,9 @@ function setup() {
   strokeWeight(5);
   fill(0);
 
-  var constrainCenter = new ConstraintOrb(550, 450, 30);
-  gameball = new Ball(500, 500, 30);
-  
-  var constraintOptions = {
-    bodyA: constrainCenter.body,
-    bodyB: gameball.body,
-    length: 10,
-    stiffness: 0.6
-  }
-
-  var constraint = Constraint.create(constraintOptions);
-  World.add(world, constraint);
-
+  createConstraint();
+  createMouseConstrain();
+ 
   var bumperA = new Bumpers(200, 150, 30); 
   var bumperB = new Bumpers(500, 150, 30); 
   var bumperC = new Bumpers(350, 300, 30);
@@ -86,6 +104,14 @@ function draw() {
   for (var i = 0; i < walls.length; i++) {
     walls[i].show();
     gameball.show();
+  }
+
+  if (mConstraint.body) {
+    var pos = mConstraint.body.position;
+    var offset = mConstraint.constraint.bodyB;
+    var m = mConstraint.mouse.position;
+     line(pos.x + offset.x, pos.y + offset.y, m.x, m.y);
+
   }
 
   stroke(255);
