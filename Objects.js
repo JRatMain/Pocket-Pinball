@@ -31,6 +31,27 @@ function Ball(x, y, r, options, color = 255) {
        
 }
 
+// function to create constraint center
+function ConstraintOrb(x, y, r) {
+    var options = {
+    isStatic: true,
+    collisionFilter: {
+        mask: 0
+    }
+  }
+    //creates matter.js Circle
+    this.body = Bodies.circle(x, y, r, options);
+    this.r = r;
+    
+    // adds object to the world object
+    World.add(world, this.body);
+    
+    // function specific to this object to integrate p5 into the matter.js object
+    this.show = function() {
+    }
+       
+}
+
 // function to create bumpers
 function Bumpers(x, y, r, color = 255) {
     var options = {

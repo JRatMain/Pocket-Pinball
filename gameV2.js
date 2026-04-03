@@ -1,5 +1,9 @@
+// Initialization of matter.js components
 var Engine = Matter.Engine;
 var World = Matter.World;
+var Constraint = Matter.Constraint;
+var Mouse = Matter.Mouse;
+var MouseConstraint = Matter.MouseConstraint;
 var Runner = Matter.Runner;
 var Bodies = Matter.Bodies;
 
@@ -25,8 +29,19 @@ function setup() {
   strokeWeight(5);
   fill(0);
 
+  var constrainCenter = new ConstraintOrb(550, 450, 30);
   gameball = new Ball(500, 500, 30);
   
+  var constraintOptions = {
+    bodyA: constrainCenter.body,
+    bodyB: gameball.body,
+    length: 10,
+    stiffness: 0.6
+  }
+
+  var constraint = Constraint.create(constraintOptions);
+  World.add(world, constraint);
+
   var bumperA = new Bumpers(200, 150, 30); 
   var bumperB = new Bumpers(500, 150, 30); 
   var bumperC = new Bumpers(350, 300, 30);
