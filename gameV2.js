@@ -16,7 +16,7 @@ var ground;
 var staticObj = {isStatic: true}
 var gameball;
 var constrainCenter;
-var mConstraint;
+var constraint;
 
 // Function to recreate constraint every time the ball is lost
 function createConstraint() {
@@ -30,7 +30,7 @@ function createConstraint() {
     stiffness: 0.6
   }
 
-  var constraint = Constraint.create(constraintOptions);
+  constraint = Constraint.create(constraintOptions);
   World.add(world, constraint);
 
 }
@@ -38,11 +38,9 @@ function createConstraint() {
 function createMouseConstrain() {
   var canvasmouse = Mouse.create(canvas.elt); //creates an object mouse that can interact with the canvas
   canvasmouse.pixelRatio = pixelDensity();
-  var options = {
-    mouse: canvasmouse
-  }
-  mConstraint = MouseConstraint.create(engine, options);
+  mConstraint = MouseConstraint.create(engine, {mouse: canvasmouse});
   World.add(world, mConstraint);
+  console.log(mConstraint);
 }
 
 function setup() {
@@ -106,12 +104,13 @@ function draw() {
     gameball.show();
   }
 
-  if (mConstraint.body) {
-    var pos = mConstraint.body.position;
-    var offset = mConstraint.constraint.bodyB;
-    var m = mConstraint.mouse.position;
-     line(pos.x + offset.x, pos.y + offset.y, m.x, m.y);
-
+  // Pulls ball to mouse
+  if (mouseIsPressed) {
+    gameball.body.position.x = mouseX;
+    gameball.body.position.y = mouseY;
+  }
+  if (p5.mouseReleased) {
+    Matter.Composite.remove(world, constraint);
   }
 
   stroke(255);
