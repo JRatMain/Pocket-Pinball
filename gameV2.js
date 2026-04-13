@@ -58,6 +58,7 @@ function setup() {
   createConstraint();
   createMouseConstrain();
  
+  // Creation of bumper objects in the game for player to interact with
   var bumperA = new Bumpers(200, 150, 30); 
   var bumperB = new Bumpers(500, 150, 30); 
   var bumperC = new Bumpers(350, 300, 30);
@@ -67,18 +68,19 @@ function setup() {
   var bumperG = new Bumpers(550, 700, 30); 
   var bumperH = new Bumpers(150, 700, 30);
 
+  // game walls
   var wallL = new staticRect(0, 0, 20, 1024);
   var wallR = new staticRect(780, 0, 20, 1024);
   var chuteBorderL = new staticRect(700, 150, 10, 1024);
 
+  // triangle to make sure the ball doesnt fall back down the chute
   var chuteAngle = new staticTriangle(700, 0, 780, 0, 780, 100, 0);
 
+  // adding objects to a list to add to the world, needs to be renamed
   walls.push(wallL);
   walls.push(wallR);
   walls.push(chuteBorderL);
-  
   walls.push(chuteAngle);
-
   walls.push(bumperA);
   walls.push(bumperB);
   walls.push(bumperC);
