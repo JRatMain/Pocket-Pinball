@@ -65,7 +65,7 @@ function Bumpers(x, y, r, color = 255) {
     this.r = r;
 
     // adds object to the world object
-    World.add(world, this.body);
+    Matter.Composite.add(world, this.body);
     
     // function specific to this object to integrate p5 into the matter.js object
     this.show = function() {
@@ -88,7 +88,7 @@ function Bumpers(x, y, r, color = 255) {
 
 
 //Function to create rectangles, can be used for physics rectangles
-function modRectangle(x, y, w, h, options) {
+function modRectangle(x, y, w, h) {
       var options = {
     friction: 0.5,
     restitution: 0.8,
@@ -117,7 +117,7 @@ function modRectangle(x, y, w, h, options) {
 }
 
 //Function to create static rectangles, good for walls
-function staticRect(x, y, w, h, options, color = 255) {
+function staticRect(x, y, w, h, color = 255) {
       var options = {
     friction: 0.5,
     restitution: 0.8,
@@ -126,9 +126,11 @@ function staticRect(x, y, w, h, options, color = 255) {
     this.body = Bodies.rectangle(x, y, w, h, {isStatic: true});
     this.w = w;
     this.h = h;
+    this.x = x;
+    this.y = y;
 
-    World.add(world, this.body);
-    
+    Matter.Composite.add(world, this.body);
+
     this.show = function() {
         var pos = this.body.position;
         var angle = this.body.angle;
@@ -136,8 +138,8 @@ function staticRect(x, y, w, h, options, color = 255) {
         push();
         stroke(200);
         strokeWeight(2);
-        fill(color); // color variable allows for different colors to easily be added in
-        translate(pos.x, pos.y); // tracks x and y position of matter.js and moves p5 object so the image matches
+        translate(pos.x, pos.y);
+        fill(color); // color variable allows for different colors to easily be added in// tracks x and y position of matter.js and moves p5 object so the image matches
         rotate(angle);
         rect(0, 0, this.w, this.h);
         pop();

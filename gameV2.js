@@ -126,7 +126,8 @@ function draw() {
     isPressed = true;
   }
   if (!mouseIsPressed & isPressed) {
-    Matter.Composite.remove(world, constraint)
+    //Matter.Composite.remove(world, constraint);
+    constraint.bodyB = null;
   }
 
   stroke(255);
