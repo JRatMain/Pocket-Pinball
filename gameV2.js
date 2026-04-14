@@ -17,12 +17,23 @@ var engine;
 var box1;
 var world;
 var obstacles = [];
-var walls = [];
+var objs = [];
 var ground;
 var staticObj = {isStatic: true}
 var gameball;
 var constrainCenter;
 var constraint;
+
+//function to control the use of flippers
+function flipperControl() {
+  if(keyIsDown(LEFT_ARROW)) {
+
+  }
+
+  if(keyIsDown(RIGHT_ARROW)) {
+
+  }
+}
 
 // Function to recreate constraint every time the ball is lost
 function createConstraint() {
@@ -92,22 +103,21 @@ function setup() {
   var chuteAngle = new staticTriangle(700, 0, 780, 0, 780, 100, 0);
 
   // adding objects to a list to add to the world, needs to be renamed
-  walls.push(wallL);
-  walls.push(wallR);
-  walls.push(chuteBorderL);
-  walls.push(chuteAngle);
-  walls.push(bumperA);
-  walls.push(bumperB);
-  walls.push(bumperC);
-  walls.push(bumperD);
-  walls.push(bumperE);
-  walls.push(bumperF);
-  walls.push(bumperG);
-  walls.push(bumperH);
+  objs.push(wallL);
+  objs.push(wallR);
+  objs.push(chuteBorderL);
+  objs.push(chuteAngle);
+  objs.push(bumperA);
+  objs.push(bumperB);
+  objs.push(bumperC);
+  objs.push(bumperD);
+  objs.push(bumperE);
+  objs.push(bumperF);
+  objs.push(bumperG);
+  objs.push(bumperH);
 
 
 
-  World.add(world, walls);
     ground = Bodies.rectangle(200, height, width, 10, {isStatic: true});
   World.add(world, ground);
 }
@@ -116,8 +126,8 @@ function setup() {
 function draw() {
   background(220);
   Engine.update(engine);
-  for (var i = 0; i < walls.length; i++) {
-    walls[i].show();
+  for (var i = 0; i < objs.length; i++) {
+    objs[i].show();
     gameball.show();
   }
 

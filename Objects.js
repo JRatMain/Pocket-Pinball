@@ -1,3 +1,19 @@
+// this function controls the flippers used by the game for hitting the ball
+function Flippers(x, y, w, h, xlg, ylg, xrg, yrg) {
+    // options that will be used for the flippers, may look a bit different than subesquent functions
+    flipperObjs = [] // stores the flipper objects that will be returned
+
+    var options = { 
+        friction: 0.5,
+        restitution: 0.8,
+        angle: Math.PI
+    }
+
+    this.bodyL = Bodies.rectangle(x, y, w, h, options)
+    this.bodyR = Bodies.rectangle(x, y, w, h, options)
+    return 
+}
+
 // function to create game ball
 function Ball(x, y, r, options, color = 255) {
     var options = {
@@ -123,7 +139,7 @@ function staticRect(x, y, w, h, color = 255) {
     restitution: 0.8,
     angle: Math.PI
   }
-    this.body = Bodies.rectangle(x, y, w, h, {isStatic: true});
+    this.body = Bodies.rectangle(x, y + h/2, w, h, {isStatic: true});
     this.w = w;
     this.h = h;
     this.x = x;
@@ -138,7 +154,7 @@ function staticRect(x, y, w, h, color = 255) {
         push();
         stroke(200);
         strokeWeight(2);
-        translate(pos.x, pos.y);
+        translate(pos.x, pos.y - h/2);
         fill(color); // color variable allows for different colors to easily be added in// tracks x and y position of matter.js and moves p5 object so the image matches
         rotate(angle);
         rect(0, 0, this.w, this.h);
