@@ -7,6 +7,8 @@ var MouseConstraint = Matter.MouseConstraint;
 var Runner = Matter.Runner;
 var Bodies = Matter.Bodies;
 
+var isPressed = false;
+
 var engine;
 var box1;
 var world;
@@ -27,7 +29,7 @@ function createConstraint() {
     bodyA: constrainCenter.body,
     bodyB: gameball.body,
     length: 10,
-    stiffness: 0.6
+    stiffness: 0.2
   }
 
   constraint = Constraint.create(constraintOptions);
@@ -108,11 +110,14 @@ function draw() {
 
   // Pulls ball to mouse
   if (mouseIsPressed) {
+    isPressed = true;
     gameball.body.position.x = mouseX;
     gameball.body.position.y = mouseY;
   }
-  if (p5.mouseReleased) {
-    Matter.Composite.remove(world, constraint);
+  if (!mouseIsPressed & isPressed) {
+    Matter.Composite.remove(world, constraint)
+    Matter.Body.setAngularVelocity(gameball, 0);
+    Matter.Body.setPosition(gameball, {x:gameball.position.x, y:gameball.position.y});
   }
 
   stroke(255);

@@ -26,6 +26,7 @@ function Ball(x, y, r, options, color = 255) {
         rotate(angle); // controls p5 rotation
         ellipse(0, 0, this.r * 2);
         pop();
+        console.log(pos.x, pos.y)
 
     }
        
