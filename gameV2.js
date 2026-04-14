@@ -41,19 +41,13 @@ function createConstraint() {
 
 }
 
-function createMouseConstrain(canvas) {
-  mouse = Matter.Mouse.create(canvas.elt) // this ties the matter.mouse object to the p5 canvas
-  
-  var options = {
-    mouse:mouse
-  }
-
   mouseConstraint = MouseConstraint.create(engine, options)
   World.add(world, mouseConstraint)
 }
 
 function setup() {
   let canvas = createCanvas(800, 1024);
+  canvas.pixelRatio = pixelDensity();
 
   // initialization of variables to make Matter methods easier to call
   engine = Engine.create(); 
@@ -66,8 +60,8 @@ function setup() {
   fill(0);
 
   // methods to create the constraints
-  createConstraint();
-  createMouseConstrain(canvas);
+  //  createConstraint();
+
  
   // Creation of bumper objects in the game for player to interact with
   var bumperA = new Bumpers(200, 150, 30); 
@@ -120,11 +114,9 @@ function draw() {
   // Pulls ball to mouse
   if (mouseIsPressed) {
     isPressed = true;
-    gameball.body.position.x = mouseX;
-    gameball.body.position.y = mouseY;
   }
   if (!mouseIsPressed & isPressed) {
-    Matter.Composite.remove(world, constraint)
+    
   }
 
   stroke(255);
