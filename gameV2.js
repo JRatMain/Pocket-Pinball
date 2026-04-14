@@ -9,6 +9,10 @@ var Bodies = Matter.Bodies;
 
 var isPressed = false;
 
+// mouse constraint variables
+var mouse
+var mouseConstraint
+
 var engine;
 var box1;
 var world;
@@ -26,7 +30,7 @@ function createConstraint() {
   gameball = new Ball(500, 500, 30);
   
   var constraintOptions = {
-    bodyA: constrainCenter.body,
+    pointA: {x: 500, y: 500},
     bodyB: gameball.body,
     length: 10,
     stiffness: 0.2
@@ -37,16 +41,19 @@ function createConstraint() {
 
 }
 
-function createMouseConstrain() {
-  var canvasmouse = Mouse.create(canvas.elt); //creates an object mouse that can interact with the canvas
-  canvasmouse.pixelRatio = pixelDensity();
-  mConstraint = MouseConstraint.create(engine, {mouse: canvasmouse});
-  World.add(world, mConstraint);
-  console.log(mConstraint);
+function createMouseConstrain(canvas) {
+  mouse = Matter.Mouse.create(canvas.elt) // this ties the matter.mouse object to the p5 canvas
+  
+  var options = {
+    mouse:mouse
+  }
+
+  mouseConstraint = MouseConstraint.create(engine, options)
+  World.add(world, mouseConstraint)
 }
 
 function setup() {
-  createCanvas(800, 1024);
+  let canvas = createCanvas(800, 1024);
 
   engine = Engine.create(); 
   engine.world.gravity.y = 1;
@@ -58,7 +65,7 @@ function setup() {
   fill(0);
 
   createConstraint();
-  createMouseConstrain();
+  createMouseConstrain(canvas);
  
   // Creation of bumper objects in the game for player to interact with
   var bumperA = new Bumpers(200, 150, 30); 
@@ -102,7 +109,7 @@ function setup() {
 
 function draw() {
   background(220);
-    
+  Engine.update(engine);
   for (var i = 0; i < walls.length; i++) {
     walls[i].show();
     gameball.show();
@@ -116,8 +123,6 @@ function draw() {
   }
   if (!mouseIsPressed & isPressed) {
     Matter.Composite.remove(world, constraint)
-    Matter.Body.setAngularVelocity(gameball, 0);
-    Matter.Body.setPosition(gameball, {x:gameball.position.x, y:gameball.position.y});
   }
 
   stroke(255);
