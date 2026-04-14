@@ -30,10 +30,10 @@ function createConstraint() {
   gameball = new Ball(500, 500, 30);
   
   var constraintOptions = {
-    pointA: {x: 500, y: 500},
+    pointA: {x: 500, y: 300},
     bodyB: gameball.body,
-    length: 10,
-    stiffness: 0.2
+    length: 0,
+    stiffness: 0.05
   }
 
   constraint = Constraint.create(constraintOptions);
@@ -55,6 +55,7 @@ function createMouseConstrain(canvas) {
 function setup() {
   let canvas = createCanvas(800, 1024);
 
+  // initialization of variables to make Matter methods easier to call
   engine = Engine.create(); 
   engine.world.gravity.y = 1;
   world = engine.world;
@@ -64,6 +65,7 @@ function setup() {
   strokeWeight(5);
   fill(0);
 
+  // methods to create the constraints
   createConstraint();
   createMouseConstrain(canvas);
  
