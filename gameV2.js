@@ -55,6 +55,7 @@ function createMouseConstrain(canvas) {
 function setup() {
   let canvas = createCanvas(800, 1024);
 
+  // initialization of variables to make Matter methods easier to call
   engine = Engine.create(); 
   engine.world.gravity.y = 1;
   world = engine.world;
@@ -64,6 +65,7 @@ function setup() {
   strokeWeight(5);
   fill(0);
 
+  // methods to create the constraints
   createConstraint();
   createMouseConstrain(canvas);
  
