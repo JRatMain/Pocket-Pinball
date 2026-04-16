@@ -12,11 +12,15 @@ function createleftFlipper(x, y, w, h, xlg, ylg) {
     // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
     this.body = Bodies.rectangle(x, y, w, h, options)
 
+    this.hinge = Bodies.circle(xlg, ylg, 5, {isStatic: true});
+    
     const constraint = Constraint.create({
-        bodyA: this.body,
-        pointA: {x: -w / 2, y: 0},
-        pointB: {x: xlg, y: ylg},
+        bodyA: this.hinge,
+        pointA: {x: 0, y: 0},
+        bodyB: this.body,
+        pointB: {x: -w / 2, y: 0},
         stiffness: 0.5,
+        inertia: Infinity,
         length: 0
     });
     

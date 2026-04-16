@@ -36,6 +36,8 @@ var constraint;
 function flipperControl() {
   if(keyIsDown(LEFT_ARROW)) {
     console.log("left arrow pressed");
+    //flipperL.bodyA.angle += Math.PI;
+    Matter.Body.setAngularVelocity(flipperL.body, -0.2);
   }
 
   if(keyIsDown(RIGHT_ARROW)) {
@@ -130,21 +132,22 @@ function setup() {
 
 
 
-    ground = Bodies.rectangle(200, height, width, 10, {isStatic: true});
-  World.add(world, ground);
+    //ground = Bodies.rectangle(200, height, width, 10, {isStatic: true});
+  //World.add(world, ground);
 }
 
 
 function draw() {
   background(220);
   Engine.update(engine);
+  flipperControl(); 
   for (var i = 0; i < objs.length; i++) {
     objs[i].show();
     gameball.show();
+
+    // code used to restrain flippers positions, needs work
     Matter.Events.on(engine, 'beforeUpdate', function() {
-      if (flipperL.body.angle < minRotation) {
-        Matter.Body.setAngularVelocity(flipperL.body.angle, 0);
-      }
+      
 
       if (flipperR.body.angle < minRotation) {
         Matter.Body.setAngularVelocity(flipperR.body.angle, 0);
