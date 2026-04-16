@@ -1,18 +1,99 @@
 // this function controls the flippers used by the game for hitting the ball
-function Flippers(x, y, w, h, xlg, ylg, xrg, yrg) {
+function createleftFlipper(x, y, w, h, xlg, ylg) {
     // options that will be used for the flippers, may look a bit different than subesquent functions
     flipperObjs = [] // stores the flipper objects that will be returned
-
+    var color = 255; // default color for the flippers
     var options = { 
         friction: 0.5,
         restitution: 0.8,
         angle: Math.PI
     }
 
-    this.bodyL = Bodies.rectangle(x, y, w, h, options)
-    this.bodyR = Bodies.rectangle(x, y, w, h, options)
-    return 
+    // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
+    this.body = Bodies.rectangle(x, y, w, h, options)
+
+    const constraint = Constraint.create({
+        bodyA: this.body,
+        pointA: {x: -w / 2, y: 0},
+        pointB: {x: xlg, y: ylg},
+        stiffness: 0.5,
+        length: 0
+    });
+    
+   
+
+    // line that adds the flippers to the world 
+    Matter.Composite.add(world, [this.body, constraint]);
+
+
+    // flipper show functions 
+    this.show = function() {
+        var pos = this.body.position; 
+        var angle = this.body.angle;
+        
+        push();
+        stroke(200);
+        strokeWeight(2);
+        fill(color); // color variable allows for different colors to easily be added in
+        translate(pos.x, pos.y); // tracks x and y position of matter.js and moves p5 object so the image matches
+        rotate(angle); // controls p5 rotation
+        rect(0, 0, w, h);
+        pop();
+    }
+
+
+    // returns value to a list in the main file so that functions for the flippers can be called
+    
 }
+
+function createrightFlipper(x, y, w, h, xrg, yrg) {
+    // options that will be used for the flippers, may look a bit different than subesquent functions
+    flipperObjs = [] // stores the flipper objects that will be returned
+
+    var color = 255; // default color for the flippers
+    var options = { 
+        friction: 0.5,
+        restitution: 0.8,
+        angle: Math.PI
+    }
+
+    // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
+    this.body = Bodies.rectangle(x, y, w, h, options)
+
+    const constraint = Constraint.create({
+        bodyA: this.body,
+        pointA: {x: w / 2, y: 0},
+        pointB: {x: xrg, y: yrg},
+        stiffness: 0.5,
+        length: 0
+    });
+    
+   
+
+    // line that adds the flippers to the world 
+    Matter.Composite.add(world, [this.body, constraint]);
+
+
+    // flipper show functions 
+    this.show = function() {
+        var pos = this.body.position; 
+        var angle = this.body.angle;
+        
+        push();
+        stroke(200);
+        strokeWeight(2);
+        fill(color); // color variable allows for different colors to easily be added in
+        translate(pos.x, pos.y); // tracks x and y position of matter.js and moves p5 object so the image matches
+        rotate(angle); // controls p5 rotation
+        rect(0, 0, w, h);
+        pop();
+    }
+
+
+    // returns value to a list in the main file so that functions for the flippers can be called
+}
+
+
 
 // function to create game ball
 function Ball(x, y, r, options, color = 255) {
@@ -42,7 +123,6 @@ function Ball(x, y, r, options, color = 255) {
         rotate(angle); // controls p5 rotation
         ellipse(0, 0, this.r * 2);
         pop();
-        console.log(pos.x, pos.y)
 
     }
        

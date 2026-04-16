@@ -13,11 +13,19 @@ var isPressed = false;
 var mouse
 var mouseConstraint
 
+// min rotation
+const minRotation = -Math.PI / 4; // 45 degrees
+
 var engine;
 var box1;
 var world;
+
+var flipperL, flipperR;
+
 var obstacles = [];
 var objs = [];
+var flippers = [];
+
 var ground;
 var staticObj = {isStatic: true}
 var gameball;
@@ -27,11 +35,11 @@ var constraint;
 //function to control the use of flippers
 function flipperControl() {
   if(keyIsDown(LEFT_ARROW)) {
-
+    console.log("left arrow pressed");
   }
 
   if(keyIsDown(RIGHT_ARROW)) {
-
+    console.log("right arrow pressed");
   }
 }
 
@@ -83,7 +91,11 @@ function setup() {
   // methods to create the constraints
   createConstraint();
   createMouseConstrain(canvas);
- 
+  flipperL = new createleftFlipper(350, 900, 100, 20, 0.5, 255);
+  flipperR = new createrightFlipper(450, 900, 100, 20, 0.5, 255);
+  objs.push(flipperL);
+  objs.push(flipperR);
+
   // Creation of bumper objects in the game for player to interact with
   var bumperA = new Bumpers(200, 150, 30); 
   var bumperB = new Bumpers(500, 150, 30); 
@@ -129,6 +141,15 @@ function draw() {
   for (var i = 0; i < objs.length; i++) {
     objs[i].show();
     gameball.show();
+    Matter.Events.on(engine, 'beforeUpdate', function() {
+      if (flipperL.body.angle < minRotation) {
+        Matter.Body.setAngularVelocity(flipperL.body.angle, 0);
+      }
+
+      if (flipperR.body.angle < minRotation) {
+        Matter.Body.setAngularVelocity(flipperR.body.angle, 0);
+      }
+    })
   }
 
   // Pulls ball to mouse
