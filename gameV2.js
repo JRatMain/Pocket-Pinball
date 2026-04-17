@@ -21,8 +21,12 @@ var rightMin = false;
 var rightMax = false;
 
 // min rotation
-const minRotationL = Math.PI / 4; // 45 degrees
+const minRotationL = Math.PI / 2; // 45 degrees
 const minRotationR = Math.PI / 4; // 45 degrees
+
+// max rotation
+const maxRotationL = Math.PI / 4; // -45 degrees
+const maxRotationR = -Math.PI / 4; // -45 degrees
 
 var engine;
 var box1;
@@ -42,13 +46,19 @@ var constraint;
 
 //function to control the use of flippers, will have a lot of ifs to control the angles of the flippers and make sure they dont go past a certain point
 function flipperControl() {
+   if(leftMax) {
+      Matter.Body.setAngularVelocity(flipperL.body.angle, 0);
+    }
   if(keyIsDown(LEFT_ARROW)) {
-    console.log("left arrow pressed");
-  flipperL.body.angle += -Math.PI / 10; // Adjust the angle increment as needed
+      flipperL.body.angle += -Math.PI / 10; // Adjust the angle increment as needed
    // Matter.Body.setAngularVelocity(flipperL.pointA, -0.2);
   }
+
   else if(!keyIsDown(LEFT_ARROW) & !leftMin) {
-     flipperL.body.angle -= -.008;
+      
+  }
+  if (leftMin) {
+    Matter.Body.setAngularVelocity(flipperL.body.angle, 0);
   }
 
   if(keyIsDown(RIGHT_ARROW)) {
@@ -99,7 +109,7 @@ function setup() {
   world = engine.world;
   Runner.run(engine);
 
-  engine.constraintIterations = 10;
+  engine.constraintIterations = 20;
 
   stroke(255);
   strokeWeight(5);
@@ -164,13 +174,17 @@ function draw() {
     // code used to restrain flippers positions, needs work
     Matter.Events.on(engine, 'beforeUpdate', function() {
       var minRotation = Math.PI / 4; // Minimum rotation angle (45 degrees)  
-      if (flipperL.body.angle < minRotation) {
-        Matter.Body.setAngle(flipperL.body, minRotation);
+      if (flipperL.body.angle < minRotationL  ) {
+        Matter.Body.setAngle(flipperL.body, minRotationL);
         leftMin = true;
+        leftMax = false;
       }
-     // if (flipperL.body.angle < minRotation) {
-       // Matter.Body.setAngularVelocity(flipperL.body.angle, Math.PI / 40);
-      //}
+      
+      if (flipperL.body.angle > maxRotationL) {
+         Matter.Body.setAngle(flipperL.body, maxRotationL);
+         leftMax = true;
+         leftMin = false;
+      }
     });
   }
 

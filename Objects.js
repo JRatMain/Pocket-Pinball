@@ -11,23 +11,20 @@ function createleftFlipper(x, y, w, h) {
 
     // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
     this.body = Bodies.rectangle(x, y, w, h, options)
-
+    this.pivot = Bodies.rectangle(x-w/2, y, w, h, {isStatic: true})
     
     const constraint = Constraint.create({
-        bodyA: this.body,
-        pointA: {x: -w / 2, y: 0},
-        pointB: {x: x, y: y},
-        stiffness: 1,
-        damping: 0.1,
-        inertia: Infinity,
-        restitution: 0,
+        bodyA: this.pivot,
+        bodyB: this.body,
+        pointB: {x: -w / 2, y: 0},
+        stiffness: 0.7,
         length: 0
     });
     
    
 
     // line that adds the flippers to the world 
-    Matter.Composite.add(world, [this.body, constraint]);
+    Matter.Composite.add(world, [this.pivot, this.body, constraint]);
 
 
     // flipper show functions 
