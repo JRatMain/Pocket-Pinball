@@ -1,5 +1,5 @@
 // this function controls the flippers used by the game for hitting the ball
-function createleftFlipper(x, y, w, h, xlg, ylg) {
+function createleftFlipper(x, y, w, h) {
     // options that will be used for the flippers, may look a bit different than subesquent functions
     flipperObjs = [] // stores the flipper objects that will be returned
     var color = 255; // default color for the flippers
@@ -12,15 +12,15 @@ function createleftFlipper(x, y, w, h, xlg, ylg) {
     // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
     this.body = Bodies.rectangle(x, y, w, h, options)
 
-    this.hinge = Bodies.circle(xlg, ylg, 5, {isStatic: true});
     
     const constraint = Constraint.create({
-        bodyA: this.hinge,
-        pointA: {x: 0, y: 0},
-        bodyB: this.body,
-        pointB: {x: -w / 2, y: 0},
-        stiffness: 0.5,
+        bodyA: this.body,
+        pointA: {x: -w / 2, y: 0},
+        pointB: {x: x, y: y},
+        stiffness: 1,
+        damping: 0.1,
         inertia: Infinity,
+        restitution: 0,
         length: 0
     });
     
@@ -50,7 +50,7 @@ function createleftFlipper(x, y, w, h, xlg, ylg) {
     
 }
 
-function createrightFlipper(x, y, w, h, xrg, yrg) {
+function createrightFlipper(x, y, w, h) {
     // options that will be used for the flippers, may look a bit different than subesquent functions
     flipperObjs = [] // stores the flipper objects that will be returned
 
@@ -67,7 +67,7 @@ function createrightFlipper(x, y, w, h, xrg, yrg) {
     const constraint = Constraint.create({
         bodyA: this.body,
         pointA: {x: w / 2, y: 0},
-        pointB: {x: xrg, y: yrg},
+        pointB: {x: x, y: y},
         stiffness: 0.5,
         length: 0
     });

@@ -36,8 +36,11 @@ var constraint;
 function flipperControl() {
   if(keyIsDown(LEFT_ARROW)) {
     console.log("left arrow pressed");
-    //flipperL.bodyA.angle += Math.PI;
-    Matter.Body.setAngularVelocity(flipperL.body, -0.2);
+  flipperL.body.angle += -Math.PI / 40; // Adjust the angle increment as needed
+   // Matter.Body.setAngularVelocity(flipperL.pointA, -0.2);
+  }
+  else if(!keyIsDown(LEFT_ARROW)) {
+     flipperL.body.angle -= -.008;
   }
 
   if(keyIsDown(RIGHT_ARROW)) {
@@ -80,11 +83,15 @@ function setup() {
   let canvas = createCanvas(800, 1024);
   canvas.pixelRatio = pixelDensity();
 
+  
+
   // initialization of variables to make Matter methods easier to call
   engine = Engine.create(); 
-  engine.world.gravity.y = 1;
+  engine.world.gravity.y = 0;
   world = engine.world;
   Runner.run(engine);
+
+  engine.constraintIterations = 10;
 
   stroke(255);
   strokeWeight(5);
@@ -93,8 +100,9 @@ function setup() {
   // methods to create the constraints
   createConstraint();
   createMouseConstrain(canvas);
-  flipperL = new createleftFlipper(350, 900, 100, 20, 0.5, 255);
-  flipperR = new createrightFlipper(450, 900, 100, 20, 0.5, 255);
+  flipperL = new createleftFlipper(250, 900, 100, 20);
+  flipperR = new createrightFlipper(550, 900, 100, 20);
+
   objs.push(flipperL);
   objs.push(flipperR);
 
@@ -147,12 +155,11 @@ function draw() {
 
     // code used to restrain flippers positions, needs work
     Matter.Events.on(engine, 'beforeUpdate', function() {
-      
 
       if (flipperR.body.angle < minRotation) {
         Matter.Body.setAngularVelocity(flipperR.body.angle, 0);
       }
-    })
+    });
   }
 
   // Pulls ball to mouse
