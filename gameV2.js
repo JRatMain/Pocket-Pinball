@@ -13,8 +13,16 @@ var isPressed = false;
 var mouse
 var mouseConstraint
 
+
+// booleans for flipper movement
+var leftMin = false;
+var leftMax = false;
+var rightMin = false;
+var rightMax = false;
+
 // min rotation
-const minRotation = -Math.PI / 4; // 45 degrees
+const minRotationL = Math.PI / 4; // 45 degrees
+const minRotationR = Math.PI / 4; // 45 degrees
 
 var engine;
 var box1;
@@ -32,14 +40,14 @@ var gameball;
 var constrainCenter;
 var constraint;
 
-//function to control the use of flippers
+//function to control the use of flippers, will have a lot of ifs to control the angles of the flippers and make sure they dont go past a certain point
 function flipperControl() {
   if(keyIsDown(LEFT_ARROW)) {
     console.log("left arrow pressed");
-  flipperL.body.angle += -Math.PI / 40; // Adjust the angle increment as needed
+  flipperL.body.angle += -Math.PI / 10; // Adjust the angle increment as needed
    // Matter.Body.setAngularVelocity(flipperL.pointA, -0.2);
   }
-  else if(!keyIsDown(LEFT_ARROW)) {
+  else if(!keyIsDown(LEFT_ARROW) & !leftMin) {
      flipperL.body.angle -= -.008;
   }
 
@@ -100,8 +108,8 @@ function setup() {
   // methods to create the constraints
   createConstraint();
   createMouseConstrain(canvas);
-  flipperL = new createleftFlipper(250, 900, 100, 20);
-  flipperR = new createrightFlipper(550, 900, 100, 20);
+  flipperL = new createleftFlipper(250, 900, 150, 30);
+  flipperR = new createrightFlipper(550, 900, 150, 30);
 
   objs.push(flipperL);
   objs.push(flipperR);
@@ -155,10 +163,14 @@ function draw() {
 
     // code used to restrain flippers positions, needs work
     Matter.Events.on(engine, 'beforeUpdate', function() {
-
-      if (flipperR.body.angle < minRotation) {
-        Matter.Body.setAngularVelocity(flipperR.body.angle, 0);
+      var minRotation = Math.PI / 4; // Minimum rotation angle (45 degrees)  
+      if (flipperL.body.angle < minRotation) {
+        Matter.Body.setAngle(flipperL.body, minRotation);
+        leftMin = true;
       }
+     // if (flipperL.body.angle < minRotation) {
+       // Matter.Body.setAngularVelocity(flipperL.body.angle, Math.PI / 40);
+      //}
     });
   }
 
