@@ -39,7 +39,7 @@ function createleftFlipper(x, y, w, h) {
     // flipper show functions 
     this.show = function() {
         var pos = this.body.position; 
-        var angle = this.body.angle + 2.2689;
+        var angle = this.body.angle - 2.0071286398;
         
         push();
         stroke(200);
@@ -90,7 +90,7 @@ function createrightFlipper(x, y, w, h) {
     // flipper show functions 
     this.show = function() {
         var pos = this.body.position; 
-        var angle = this.body.angle;
+        var angle = this.body.angle +  4.1015237422;
         
         push();
         stroke(200);
@@ -139,7 +139,6 @@ function Ball(x, y, r, options, color = 255) {
         strokeWeight(2);
         fill(color); // color variable allows for different colors to easily be added in
         translate(pos.x, pos.y); // tracks x and y position of matter.js and moves p5 object so the image matches
-        rotate(angle); // controls p5 rotation
         ellipse(0, 0, this.r * 2);
         pop();
 
