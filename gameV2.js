@@ -21,12 +21,12 @@ var rightMin = false;
 var rightMax = false;
 
 // min rotation
-const minRotationL = Math.PI / 2; // 45 degrees
-const minRotationR = Math.PI / 4; // 45 degrees
+const minRotationL = 0.436332313; // 45 degrees
+const minRotationR =  2.617993878; // 45 degrees
 
 // max rotation
-const maxRotationL = Math.PI / 4; // -45 degrees
-const maxRotationR = -Math.PI / 4; // -45 degrees
+const maxRotationL = -0.7853981634; // -45 degrees
+const maxRotationR = -2.617993878; // -45 degrees
 
 var engine;
 var box1;
@@ -50,20 +50,27 @@ function flipperControl() {
       Matter.Body.setAngularVelocity(flipperL.body.angle, 0);
     }
   if(keyIsDown(LEFT_ARROW)) {
-      flipperL.body.angle += -Math.PI / 10; // Adjust the angle increment as needed
+      flipperL.body.angle -= 0.008; // Adjust the angle increment as needed
    // Matter.Body.setAngularVelocity(flipperL.pointA, -0.2);
   }
 
-  else if(!keyIsDown(LEFT_ARROW) & !leftMin) {
-      
+  else if(!keyIsDown(LEFT_ARROW)) {
+      Matter.Body.setAngle(flipperL.body, minRotationL);
   }
   if (leftMin) {
     Matter.Body.setAngularVelocity(flipperL.body.angle, 0);
   }
-
   if(keyIsDown(RIGHT_ARROW)) {
-    console.log("right arrow pressed");
+      flipperR.body.angle += 0.008; // Adjust the angle increment as needed
   }
+
+  else if(!keyIsDown(RIGHT_ARROW)) {
+      Matter.Body.setAngle(flipperR.body, minRotationR);
+  }
+  if (leftMin) {
+    Matter.Body.setAngularVelocity(flipperR.body.angle, 0);
+  }
+
 }
 
 // Function to recreate constraint every time the ball is lost
@@ -180,12 +187,27 @@ function draw() {
         leftMax = false;
       }
       
-      if (flipperL.body.angle > maxRotationL) {
+      if (flipperL.body.angle >= maxRotationL) {
          Matter.Body.setAngle(flipperL.body, maxRotationL);
          leftMax = true;
          leftMin = false;
       }
+      // right flipper code
+      if (flipperR.body.angle < minRotationR  ) {
+        Matter.Body.setAngle(flipperR.body, minRotationR);
+        rightMin = true;
+        rightMax = false;
+      }
+      
+      if (flipperR.body.angle >= maxRotationR) {
+         Matter.Body.setAngle(flipperR.body, maxRotationR);
+         rightMax = true;
+         rightMin = false;
+      }
+
+    
     });
+
   }
 
   // Pulls ball to mouse

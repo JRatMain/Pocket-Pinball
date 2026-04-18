@@ -1,3 +1,9 @@
+//function to sense if the ball is touching a sessionStorage, will have a sub method to detect collisions and will have a way to link 
+//booleans to it
+function createSensorZone() {
+
+}
+
 // this function controls the flippers used by the game for hitting the ball
 function createleftFlipper(x, y, w, h) {
     // options that will be used for the flippers, may look a bit different than subesquent functions
@@ -11,10 +17,13 @@ function createleftFlipper(x, y, w, h) {
 
     // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
     this.body = Bodies.rectangle(x, y, w, h, options)
-    this.pivot = Bodies.rectangle(x-w/2, y, w, h, {isStatic: true})
+    this.pivot = Bodies.circle(x-w/2, y, 2, {isStatic: true, collisionFilter: {
+        group:0
+    }})
     
     const constraint = Constraint.create({
         bodyA: this.pivot,
+        pointA: {x: 2, y:0},
         bodyB: this.body,
         pointB: {x: -w / 2, y: 0},
         stiffness: 0.7,
@@ -30,7 +39,7 @@ function createleftFlipper(x, y, w, h) {
     // flipper show functions 
     this.show = function() {
         var pos = this.body.position; 
-        var angle = this.body.angle;
+        var angle = this.body.angle + 2.2689;
         
         push();
         stroke(200);
@@ -60,19 +69,22 @@ function createrightFlipper(x, y, w, h) {
 
     // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
     this.body = Bodies.rectangle(x, y, w, h, options)
-
+    this.pivot = Bodies.circle(x+w/2, y, 2, {isStatic: true, collisionFilter: {
+        mask:0
+    }})
     const constraint = Constraint.create({
-        bodyA: this.body,
-        pointA: {x: w / 2, y: 0},
-        pointB: {x: x, y: y},
-        stiffness: 0.5,
+       bodyA: this.pivot,
+        pointA: {x: -2, y:0},
+        bodyB: this.body,
+        pointB: {x: w / 2, y: 0},
+        stiffness: 0.7,
         length: 0
     });
     
    
 
     // line that adds the flippers to the world 
-    Matter.Composite.add(world, [this.body, constraint]);
+    Matter.Composite.add(world, [this.pivot, this.body, constraint]);
 
 
     // flipper show functions 
@@ -106,6 +118,7 @@ function Ball(x, y, r, options, color = 255) {
     //creates matter.js Circle
     this.body = Bodies.circle(x, y, r, options);
     this.r = r;
+    this.mass = 10;
     
     // adds object to the world object
     World.add(world, this.body);
@@ -115,6 +128,11 @@ function Ball(x, y, r, options, color = 255) {
         // this sets the p5 position and angle to the matter.js positions and angles
         var pos = this.body.position; 
         var angle = this.body.angle;
+
+        Matter.Body.applyForce(this.body, pos, { 
+        x: 0, 
+        y: 0.0003
+    });
         
         push();
         stroke(200);
