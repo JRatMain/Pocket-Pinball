@@ -21,7 +21,7 @@ var rightMin = false;
 var rightMax = false;
 
 // min rotation
-const minRotationL = 0.436332313; // 45 degrees
+const minRotationL = 4.1887902048; // 45 degrees
 const minRotationR =  2.617993878; // 45 degrees
 
 // max rotation
@@ -32,7 +32,6 @@ var engine;
 var box1;
 var world;
 
-var flipperL, flipperR;
 
 var obstacles = [];
 var objs = [];
@@ -44,7 +43,7 @@ var gameball;
 var constrainCenter;
 var constraint;
 
-//function to control the use of flippers, will have a lot of ifs to control the angles of the flippers and make sure they dont go past a certain point
+/*//function to control the use of flippers, will have a lot of ifs to control the angles of the flippers and make sure they dont go past a certain point
 function flipperControl() {
    if(leftMax) {
       Matter.Body.setAngularVelocity(flipperL.body.angle, 0);
@@ -72,7 +71,7 @@ function flipperControl() {
   }
 
 }
-
+*/
 // Function to recreate constraint every time the ball is lost
 function createConstraint() {
   constrainCenter = new ConstraintOrb(550, 450, 30);
@@ -116,7 +115,7 @@ function setup() {
   world = engine.world;
   Runner.run(engine);
 
-  engine.constraintIterations = 20;
+  engine.constraintIterations = 10;
 
   stroke(255);
   strokeWeight(5);
@@ -125,11 +124,14 @@ function setup() {
   // methods to create the constraints
   createConstraint();
   createMouseConstrain(canvas);
-  flipperL = new createleftFlipper(250, 900, 150, 30);
-  flipperR = new createrightFlipper(550, 900, 150, 30);
+  //flipperL = new createleftFlipper(250, 900, 150, 30);
+  //flipperR = new createrightFlipper(550, 900, 150, 30);
 
-  objs.push(flipperL);
-  objs.push(flipperR);
+
+  const flipperL = new Flipper(250, 900, 150, 30, true, world);
+  const flipperR = new Flipper(550, 900, 150, 30, false, world);
+  flippers.push(flipperL);
+  flippers.push(flipperR);
 
   // Creation of bumper objects in the game for player to interact with
   var bumperA = new Bumpers(200, 150, 30); 
@@ -164,7 +166,6 @@ function setup() {
   objs.push(bumperH);
 
 
-
     //ground = Bodies.rectangle(200, height, width, 10, {isStatic: true});
   //World.add(world, ground);
 }
@@ -173,45 +174,20 @@ function setup() {
 function draw() {
   background(220);
   Engine.update(engine);
-  flipperControl(); 
   for (var i = 0; i < objs.length; i++) {
     objs[i].show();
     gameball.show();
 
     // code used to restrain flippers positions, needs work
-    Matter.Events.on(engine, 'beforeUpdate', function() {
-      var minRotation = Math.PI / 4; // Minimum rotation angle (45 degrees)  
-      if (flipperL.body.angle < minRotationL  ) {
-        Matter.Body.setAngle(flipperL.body, minRotationL);
-        leftMin = true;
-        leftMax = false;
-      }
-      
-      if (flipperL.body.angle >= maxRotationL) {
-         Matter.Body.setAngle(flipperL.body, maxRotationL);
-         leftMax = true;
-         leftMin = false;
-      }
-      // right flipper code
-      if (flipperR.body.angle < minRotationR  ) {
-        Matter.Body.setAngle(flipperR.body, minRotationR);
-        rightMin = true;
-        rightMax = false;
-      }
-      
-      if (flipperR.body.angle >= maxRotationR) {
-         Matter.Body.setAngle(flipperR.body, maxRotationR);
-         rightMax = true;
-         rightMin = false;
-      }
-
     
-    });
-
   }
 
-  // Pulls ball to mouse
-  if (mouseIsPressed) {
+  for (var i = 0; i < flippers.length; i++) {
+    flippers[i].show();
+    flippers[i].pressed();
+  }
+
+    if (mouseIsPressed) {
     isPressed = true;
   }
   if (!mouseIsPressed & isPressed) {
