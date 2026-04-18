@@ -83,50 +83,69 @@ class Flipper {
          
                 var cos = Math.cos(rotationAngle),
                 sin = Math.sin(rotationAngle);
-                Matter.Body.rotate(this.body, rotationAngle, pivotPoint);  
+
+                var dx = this.body.position.x - pivotPoint.x,
+                dy = this.body.position.y - pivotPoint.y;
+
+            
+            var dx = this.body.position.x - pivotPoint.x,
+                dy = this.body.position.y - pivotPoint.y;
+
+            Matter.Body.setPosition(this.body, {
+                x: pivotPoint.x + (dx * cos - dy * sin),
+                y: pivotPoint.y + (dx * sin + dy * cos)
+            });
+                Matter.Body.rotate(this.body, rotationAngle);  
     }
 
-    clamp(min, max) {
-       // Clamp
-        if (this.body.angle > max) {
-            var angleDifference = max - this.body.angle;
-            //Matter.Body.setAngle(this.body, max);
-            Matter.Body.setAngularVelocity(this.body, angleDifference); // Stop the speed
-        }
-        if (this.body.angle < min) {
-            var angleDifference = min - this.body.angle;
-            //Matter.Body.setAngle(this.body, min);
-            Matter.Body.setAngularVelocity(this.body, angleDifference); // Stop the speed
-        }
+    clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
     }
     
     pressed() {
         
         if(this.isLeft) {
-            var min =   4.7123889804;
-            var max = 0.7853981634;
+            var min =  4.7123889804;
+            var max =  0.7853981634;
             var pivotPoint = {x: this.x - this.w /2, y: this.y};
-        
+            if (min > this.body.angle & !this.minAngle) {
+                this.minAngle = true;
+                this.maxAngle = false;
+            }
+            if (max <= this.body.angle & !this.maxAngle) {
+                this.maxAngle = true;
+                this.minAngle = false;
+            }
             if(keyIsDown(LEFT_ARROW)) {
                var rotationAngle = -.4;
+               this.minAngle = false;
                this.angleCalc(pivotPoint, rotationAngle);
             }
-    
+            if (this.maxAngle) {
+                console.log('max')
+                var rotationAngle = .4
+                this.angleCalc(pivotPoint, rotationAngle);
+                Matter.Body.rotate(this.body, rotationAngle);
+            }
+           
             if (!keyIsDown(LEFT_ARROW) & !this.minAngle) {
                 rotationAngle = .4
                 this.angleCalc(pivotPoint, rotationAngle);
             }
-
-            this.clamp(min, max);
+                
+            if (this.minAngle & !keyIsDown(LEFT_ARROW)) {
+                Matter.Body.rotate(this.body, 0)
+            }
+           
         }
-
+        
         else {
             var pivotPoint = {x: this.x + this.w /2, y: this.y};
             
             
             if(keyIsDown(RIGHT_ARROW) * !this.maxAngle) {
                 var rotationAngle = .4; 
-                Matter.Body.rotate(this.body, .4, pivotPoint)
+                this.angleCalc(pivotPoint, rotationAngle); 
             }
             else if (this.maxAngle) {
                 Matter.Body.rotate(this.body, 0);
@@ -134,7 +153,7 @@ class Flipper {
 
             if (!keyIsDown(RIGHT_ARROW) & !this.minAngle) {
                 rotationAngle = -.4
-                Matter.Body.rotate(this.body, -.4, pivotPoint)
+                this.angleCalc(pivotPoint, rotationAngle);
             }
             else if (this.minAngle) {
                 Matter.Body.rotate(this.body, 0);
