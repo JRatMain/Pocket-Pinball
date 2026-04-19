@@ -156,7 +156,6 @@
     flipperL.show();
     flipperR.show(); 
     flipperL.pressed();
-    detectCol(gameball, ballout)
     flipperR.pressed();
 
       if (mouseIsPressed) {
