@@ -4,116 +4,14 @@ function createSensorZone() {
 
 }
 
-// this function controls the flippers used by the game for hitting the ball
-function createleftFlipper(x, y, w, h) {
-    // options that will be used for the flippers, may look a bit different than subesquent functions
-    flipperObjs = [] // stores the flipper objects that will be returned
-    var color = 255; // default color for the flippers
-    var options = { 
-        friction: 0.5,
-        restitution: 0.8,
-        angle: Math.PI
-    }
-
-    // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
-    this.body = Bodies.rectangle(x, y, w, h, options)
-    this.pivot = Bodies.circle(x-w/2, y, 2, {isStatic: true, collisionFilter: {
-        group:0
-    }})
-    
-    const constraint = Constraint.create({
-        bodyA: this.pivot,
-        pointA: {x: 2, y:0},
-        bodyB: this.body,
-        pointB: {x: -w / 2, y: 0},
-        stiffness: 0.7,
-        length: 0
-    });
-    
-   
-
-    // line that adds the flippers to the world 
-    Matter.Composite.add(world, [this.pivot, this.body, constraint]);
-
-
-    // flipper show functions 
-    this.show = function() {
-        var pos = this.body.position; 
-        var angle = this.body.angle - 2.0071286398;
-        
-        push();
-        stroke(200);
-        strokeWeight(2);
-        fill(color); // color variable allows for different colors to easily be added in
-        translate(pos.x, pos.y); // tracks x and y position of matter.js and moves p5 object so the image matches
-        rotate(angle); // controls p5 rotation
-        rect(0, 0, w, h);
-        pop();
-    }
-
-
-    // returns value to a list in the main file so that functions for the flippers can be called
-    
-}
-
-function createrightFlipper(x, y, w, h) {
-    // options that will be used for the flippers, may look a bit different than subesquent functions
-    flipperObjs = [] // stores the flipper objects that will be returned
-
-    var color = 255; // default color for the flippers
-    var options = { 
-        friction: 0.5,
-        restitution: 0.8,
-        angle: Math.PI
-    }
-
-    // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
-    this.body = Bodies.rectangle(x, y, w, h, options)
-    this.pivot = Bodies.circle(x+w/2, y, 2, {isStatic: true, collisionFilter: {
-        mask:0
-    }})
-    const constraint = Constraint.create({
-       bodyA: this.pivot,
-        pointA: {x: -2, y:0},
-        bodyB: this.body,
-        pointB: {x: w / 2, y: 0},
-        stiffness: 0.7,
-        length: 0
-    });
-    
-   
-
-    // line that adds the flippers to the world 
-    Matter.Composite.add(world, [this.pivot, this.body, constraint]);
-
-
-    // flipper show functions 
-    this.show = function() {
-        var pos = this.body.position; 
-        var angle = this.body.angle +  4.1015237422;
-        
-        push();
-        stroke(200);
-        strokeWeight(2);
-        fill(color); // color variable allows for different colors to easily be added in
-        translate(pos.x, pos.y); // tracks x and y position of matter.js and moves p5 object so the image matches
-        rotate(angle); // controls p5 rotation
-        rect(0, 0, w, h);
-        pop();
-    }
-
-
-    // returns value to a list in the main file so that functions for the flippers can be called
-}
-
-
 
 // function to create game ball
 function Ball(x, y, r, options, color = 255) {
     var options = {
     friction: 0.5,
     restitution: 0.8,
-    angle: Math.PI
+    angle: Math.PI,
+    inertia: Infinity
   }
     //creates matter.js Circle
     this.body = Bodies.circle(x, y, r, options);
@@ -231,13 +129,14 @@ function modRectangle(x, y, w, h) {
 }
 
 //Function to create static rectangles, good for walls
-function staticRect(x, y, w, h, color = 255) {
+function staticRect(x, y, w, h, color = 255, rotation = 0, rectchoice = CORNER) {
       var options = {
     friction: 0.5,
     restitution: 0.8,
     angle: Math.PI
   }
     this.body = Bodies.rectangle(x, y + h/2, w, h, {isStatic: true});
+    Matter.Body.setAngle(this.body, rotation)
     this.w = w;
     this.h = h;
     this.x = x;
@@ -252,6 +151,7 @@ function staticRect(x, y, w, h, color = 255) {
         push();
         stroke(200);
         strokeWeight(2);
+        rectMode(rectchoice);
         translate(pos.x, pos.y - h/2);
         fill(color); // color variable allows for different colors to easily be added in// tracks x and y position of matter.js and moves p5 object so the image matches
         rotate(angle);

@@ -25,7 +25,8 @@ class leftFlipper {
             this.options = { 
                 friction: 0.5,
                 restitution: 0.8,
-                angle: Math.PI
+                angle: Math.PI,
+                inertia: Infinity
             }
 
             // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
@@ -66,11 +67,11 @@ class leftFlipper {
     }
 
     pressed() {
-        if(this.body.angle <= 1) {
+        if(this.body.angle <= 2.2) {
              Matter.Body.rotate(this.body, 0, this.pivotr);
         }
         else if(keyIsDown(LEFT_ARROW)) {
-            Matter.Body.rotate(this.body, -.45, this.pivot);
+            Matter.Body.rotate(this.body, -.15, this.pivot);
         }
 
         if(this.body.angle >= 3.4) {
@@ -79,7 +80,7 @@ class leftFlipper {
             
         else if (!keyIsDown(LEFT_ARROW)) {
             //console.log(this.body.angle)
-            Matter.Body.rotate(this.body, .3, this.pivot);
+            Matter.Body.rotate(this.body, .1, this.pivot);
             //this.angleCalc(pivotPoint, rotationAngle);
         } 
     
@@ -107,7 +108,8 @@ class rightFlipper {
             this.options = { 
                 friction: 0.5,
                 restitution: 0,
-                angle: Math.PI
+                angle: Math.PI,
+                inertia: Infinity
             }
 
             // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
@@ -153,14 +155,14 @@ class rightFlipper {
              Matter.Body.rotate(this.bodyr, 0, this.pivotr);
         }
         else if(keyIsDown(RIGHT_ARROW)) {
-               Matter.Body.rotate(this.bodyr, .5, this.pivotr);
+               Matter.Body.rotate(this.bodyr, .15, this.pivotr);
             }
             if(this.bodyr.angle <= 2.9) {
                 Matter.Body.rotate(this.bodyr, 0, this.pivotr);
             }
             else if (!keyIsDown(RIGHT_ARROW)) {
                 console.log(this.bodyr.angle)
-                Matter.Body.rotate(this.bodyr, -.3, this.pivotr);
+                Matter.Body.rotate(this.bodyr, -.1, this.pivotr);
                 //this.angleCalc(pivotPoint, rotationAngle);
             } 
         
