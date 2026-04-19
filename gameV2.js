@@ -43,35 +43,6 @@ var gameball;
 var constrainCenter;
 var constraint;
 
-/*//function to control the use of flippers, will have a lot of ifs to control the angles of the flippers and make sure they dont go past a certain point
-function flipperControl() {
-   if(leftMax) {
-      Matter.Body.setAngularVelocity(flipperL.body.angle, 0);
-    }
-  if(keyIsDown(LEFT_ARROW)) {
-      flipperL.body.angle -= 0.008; // Adjust the angle increment as needed
-   // Matter.Body.setAngularVelocity(flipperL.pointA, -0.2);
-  }
-
-  else if(!keyIsDown(LEFT_ARROW)) {
-      Matter.Body.setAngle(flipperL.body, minRotationL);
-  }
-  if (leftMin) {
-    Matter.Body.setAngularVelocity(flipperL.body.angle, 0);
-  }
-  if(keyIsDown(RIGHT_ARROW)) {
-      flipperR.body.angle += 0.008; // Adjust the angle increment as needed
-  }
-
-  else if(!keyIsDown(RIGHT_ARROW)) {
-      Matter.Body.setAngle(flipperR.body, minRotationR);
-  }
-  if (leftMin) {
-    Matter.Body.setAngularVelocity(flipperR.body.angle, 0);
-  }
-
-}
-*/
 // Function to recreate constraint every time the ball is lost
 function createConstraint() {
   constrainCenter = new ConstraintOrb(550, 450, 30);
@@ -163,7 +134,7 @@ function setup() {
   objs.push(bumperE);
   objs.push(bumperF);
   objs.push(bumperG);
-  objs.push(bumperH);
+  objs.push(bumperH); 
 
 
     //ground = Bodies.rectangle(200, height, width, 10, {isStatic: true});
@@ -176,15 +147,14 @@ function draw() {
   Engine.update(engine);
   for (var i = 0; i < objs.length; i++) {
     objs[i].show();
-    gameball.show();
-
+    gameball.show();  
     // code used to restrain flippers positions, needs work
     
   }
 
   for (var i = 0; i < flippers.length; i++) {
     flippers[i].show();
-    flippers[i].pressed();
+    //flippers[i].pressed();
   }
 
     if (mouseIsPressed) {

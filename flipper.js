@@ -24,17 +24,26 @@ class Flipper {
             this.options = { 
                 friction: 0.5,
                 restitution: 0.8,
-                angle: Math.PI,
-                isStatic: true
+                angle: Math.PI
             }
 
             // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
             this.body = Bodies.rectangle(x, y, w, h, this.options)
+            this.pivot = this.Bodies.circle(x - w /2, y, 5, {isStatic: true})
              World.add(world, this.body);
+             World.add(world, this.pivot);
+            
+             var constraint = this.Constraint.create({
+                bodyA: this.pivot,
+                pointA: {x: 5, y: 0},
+                bodyB: this.body,
+                pointB: {x: -w / 2, y: 0},
+                length: 0,
+                stiffness: 1
 
-            this.flipCompositeL = Matter.Composite.create({ label: 'flipperGroupL'});
-            Matter.Composite.add(this.flipCompositeL, this.body);
-            Matter.Composite.add(world, this.flipCompositeL);
+               
+             })
+             World.add(world, constraint);
         }
             else {
                 // options that will be used for the flippers, may look a bit different than subesquent functions
@@ -54,9 +63,6 @@ class Flipper {
             this.body = Bodies.rectangle(x, y, w, h, this.options)
             World.add(world, this.body);
 
-            this.flipCompositeR = Matter.Composite.create({ label: 'flipperGroupR'});
-            Matter.Composite.add(this.flipCompositeR, this.body);
-            Matter.Composite.add(world, this.flipCompositeR);
         }
         
     }
@@ -79,7 +85,7 @@ class Flipper {
     }
     }
 
-    angleCalc(pivotPoint, rotationAngle) {
+    /*angleCalc(pivotPoint, rotationAngle) {
          
                 var cos = Math.cos(rotationAngle),
                 sin = Math.sin(rotationAngle);
@@ -141,4 +147,5 @@ class Flipper {
             }
         }
     }
+        */
 }
