@@ -10,8 +10,8 @@ function Ball(x, y, r, options, color = 255) {
     var options = {
     friction: 0.5,
     restitution: 0.8,
-    angle: Math.PI,
-    inertia: Infinity
+    angle: Math.PI
+    //inertia: Infinity
   }
     //creates matter.js Circle
     this.body = Bodies.circle(x, y, r, options);

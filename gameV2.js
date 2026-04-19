@@ -14,19 +14,6 @@
   var mouseConstraint
 
 
-  // booleans for flipper movement
-  var leftMin = false;
-  var leftMax = false;
-  var rightMin = false;
-  var rightMax = false;
-
-  // min rotation
-  const minRotationL = 4.1887902048; // 45 degrees
-  const minRotationR =  2.617993878; // 45 degrees
-
-  // max rotation
-  const maxRotationL = -0.7853981634; // -45 degrees
-  const maxRotationR = -2.617993878; // -45 degrees
 
   var engine;
   var box1;
@@ -41,6 +28,10 @@
   var gameball;
   var constrainCenter;
   var constraint;
+
+
+  // sensor detections
+  var ballout;
 
   // Function to recreate constraint every time the ball is lost
   function createConstraint() {
@@ -107,6 +98,8 @@
     //const staticREct2 = new staticRect(450, 1000, 200, 75);
     var flipperRampL = new staticRect(30, 800, 175, 25, 255, 3.8, CENTER)
     var flipperRampR = new staticRect(680, 850, 50, 25, 255, 2, CENTER)
+
+
     
 
     //World.add(world, staticREct);
@@ -163,6 +156,7 @@
     flipperL.show();
     flipperR.show(); 
     flipperL.pressed();
+    detectCol(gameball, ballout)
     flipperR.pressed();
 
       if (mouseIsPressed) {
