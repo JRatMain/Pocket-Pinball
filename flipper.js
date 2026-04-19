@@ -100,7 +100,7 @@ class rightFlipper {
 
             // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
             this.bodyr = Bodies.rectangle(x, y, w, h, this.options)
-            this.pivotr ={x: w/2, y: y};
+            this.pivotr ={x: x + w/2, y: y};
              World.add(world, this.bodyr);
              World.add(world, this.pivotr);
             
