@@ -32,7 +32,6 @@ var engine;
 var box1;
 var world;
 
-
 var obstacles = [];
 var objs = [];
 var flipperL, flipperR;
@@ -87,6 +86,8 @@ function setup() {
   Runner.run(engine);
 
   engine.constraintIterations = 10;
+  engine.positionIterations = 20;
+  engine.velocityIterations = 20;
 
   stroke(255);
   strokeWeight(5);
@@ -99,14 +100,15 @@ function setup() {
   //flipperR = new createrightFlipper(550, 900, 150, 30);
 
 
-   flipperL = new leftFlipper(250, 900, 150, 30, world);
-  const staticREct = new staticRect(200, 1000, 200, 75);
-   flipperR = new rightFlipper(550, 900, 150, 30, world);
-  const staticREct2 = new staticRect(450, 1000, 200, 75);
+   
+  //const staticREct = new staticRect(200, 1000, 200, 75);
+  flipperL = new leftFlipper(250, 900, 150, 50, world);
+  flipperR = new rightFlipper(550, 900, 150, 50, world);
+  //const staticREct2 = new staticRect(450, 1000, 200, 75);
   
 
-  objs.push(staticREct);
-  objs.push(staticREct2);
+  //World.add(world, staticREct);
+  //World.add( world, staticREct2);
   // Creation of bumper objects in the game for player to interact with
   var bumperA = new Bumpers(200, 150, 30); 
   var bumperB = new Bumpers(500, 150, 30); 
