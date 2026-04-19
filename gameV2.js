@@ -35,7 +35,7 @@ var world;
 
 var obstacles = [];
 var objs = [];
-var flippers = [];
+var flipperL, flipperR;
 
 var ground;
 var staticObj = {isStatic: true}
@@ -99,11 +99,14 @@ function setup() {
   //flipperR = new createrightFlipper(550, 900, 150, 30);
 
 
-  const flipperL = new Flipper(250, 900, 150, 30, true, world);
-  const flipperR = new Flipper(550, 900, 150, 30, false, world);
-  flippers.push(flipperL);
-  flippers.push(flipperR);
+   flipperL = new leftFlipper(250, 900, 150, 30, world);
+  const staticREct = new staticRect(200, 1000, 200, 75);
+   flipperR = new rightFlipper(550, 900, 150, 30, world);
+  const staticREct2 = new staticRect(450, 1000, 200, 75);
+  
 
+  objs.push(staticREct);
+  objs.push(staticREct2);
   // Creation of bumper objects in the game for player to interact with
   var bumperA = new Bumpers(200, 150, 30); 
   var bumperB = new Bumpers(500, 150, 30); 
@@ -151,11 +154,10 @@ function draw() {
     // code used to restrain flippers positions, needs work
     
   }
-
-  for (var i = 0; i < flippers.length; i++) {
-    flippers[i].show();
-    //flippers[i].pressed();
-  }
+  flipperL.show();
+  flipperR.show(); 
+  flipperL.pressed();
+  flipperR.pressed();
 
     if (mouseIsPressed) {
     isPressed = true;
