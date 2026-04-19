@@ -1,17 +1,16 @@
 function detectCol(bodyA, bodyB) {
-    const collision = Matter.Collison.collides(bodyA, bodyB);
+    var collision = Matter.Collision.collides(bodyA, bodyB);
     if (collision) {
         console.log("Collision!!!")
     }
 }
 
-function sensorRect(x, y, w, h, rotation = 0) {
+function sensorRect(x, y, w, h, sensorName, rotation = 0) {
       var options = {
-    friction: 0.5,
-    restitution: 0.8,
-    angle: Math.PI
+    isSensor: true,
+    label: sensorName
   }
-    this.body = Bodies.rectangle(x, y, w, h, {isStatic: true, isSensor: true});
+    this.body = Bodies.rectangle(x, y, w, h, options);
     Matter.Body.setAngle(this.body, rotation)
     this.w = w;
     this.h = h;

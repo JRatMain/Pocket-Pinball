@@ -96,8 +96,9 @@
     flipperL = new leftFlipper(225, 950, 200, 50, world);
     flipperR = new rightFlipper(550, 950, 200, 50, world);
     //const staticREct2 = new staticRect(450, 1000, 200, 75);
-    var flipperRampL = new staticRect(30, 800, 175, 25, 255, 3.8, CENTER)
+    var flipperRampL = new staticRect(70, 800, 175, 25, 255, 3.8, CENTER)
     var flipperRampR = new staticRect(680, 850, 50, 25, 255, 2, CENTER)
+    ballout = new sensorRect(500, 1000, 1000, 11, 'firstsensor')
 
 
     
@@ -157,7 +158,7 @@
     flipperR.show(); 
     flipperL.pressed();
     flipperR.pressed();
-
+    detectCol(gameball.body, ballout.body)
       if (mouseIsPressed) {
       isPressed = true;
     }
