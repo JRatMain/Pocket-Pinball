@@ -33,6 +33,8 @@
   // sensor detections
   var ballout;
 
+  var ballout_bool;
+
   // Function to recreate constraint every time the ball is lost
   function createConstraint() {
     constrainCenter = new ConstraintOrb(550, 450, 30);
@@ -158,7 +160,8 @@
     flipperR.show(); 
     flipperL.pressed();
     flipperR.pressed();
-    detectCol(gameball.body, ballout.body)
+    ballout_bool = detectCol(gameball.body, ballout.body)
+    console.log(ballout_bool)
       if (mouseIsPressed) {
       isPressed = true;
     }

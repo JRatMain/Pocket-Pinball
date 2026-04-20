@@ -1,8 +1,9 @@
 function detectCol(bodyA, bodyB) {
     var collision = Matter.Collision.collides(bodyA, bodyB);
     if (collision) {
-        console.log("Collision!!!")
+        return true
     }
+    return false
 }
 
 function sensorRect(x, y, w, h, sensorName, rotation = 0) {
