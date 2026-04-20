@@ -1,17 +1,18 @@
-//function to sense if the ball is touching a sessionStorage, will have a sub method to detect collisions and will have a way to link 
-//booleans to it
-function createSensorZone() {
-
-}
-
+// categories
+var ballCategory = 0x0001
+var bumperCategory = 0x0002
+var wallCategory = 0x0003
 
 // function to create game ball
 function Ball(x, y, r, options, color = 255) {
     var options = {
     friction: 0.5,
     restitution: 0.8,
-    angle: Math.PI
+    angle: Math.PI,
     //inertia: Infinity
+    label: "ball",
+    category: ballCategory,
+    mask: bumperCategory, wallCategory
   }
     //creates matter.js Circle
     this.body = Bodies.circle(x, y, r, options);
@@ -70,7 +71,10 @@ function Bumpers(x, y, r, color = 255) {
     var options = {
     friction: 0.5,
     restitution: 0.8,
-    angle: Math.PI
+    angle: Math.PI,
+    label: "bumper",
+    category: bumperCategory,
+    mask: ballCategory
   }
     //creates matter.js Circle and is set to static
     this.body = Bodies.circle(x, y, r, {isStatic: true});
@@ -133,7 +137,9 @@ function staticRect(x, y, w, h, color = 255, rotation = 0, rectchoice = CORNER) 
       var options = {
     friction: 0.5,
     restitution: 0.8,
-    angle: Math.PI
+    angle: Math.PI,
+    category: wallCategory,
+    mask: ballCategory
   }
     this.body = Bodies.rectangle(x, y + h/2, w, h, {isStatic: true});
     Matter.Body.setAngle(this.body, rotation)
@@ -159,26 +165,4 @@ function staticRect(x, y, w, h, color = 255, rotation = 0, rectchoice = CORNER) 
         pop();
 
     }
-}
-
-function staticTriangle(x1, y1, x2, y2, x3, y3, color) {
-    this.body = Bodies.fromVertices(0,0, [{x:x1, y:y1}, {x:x2, y:y2}, {x:x3, y:y3}], {isStatic: true});
-
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
-    this.x3 = x3;
-    this.y3 = y3;
-
-    World.add(world, this.body);
-
-    this.show = function() {
-        push();
-        stroke(200);
-        strokeWeight(2);
-        fill(color); // color variable allows for different colors to easily be added in
-        triangle(this.x1, this.y1, this.x2, this.y2, this.x3, this.y3); 
-        pop();
-    } 
 }

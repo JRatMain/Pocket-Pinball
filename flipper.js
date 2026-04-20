@@ -1,3 +1,8 @@
+var ballCategory = 0x0001
+var bumperCategory = 0x0002
+var wallCategory = 0x0003
+
+
 // function to check collision between two rectangles to be used to check if the flippers collide and set their rotation to zero
 function checkFlipColision(bodyA, bodyB) {
     return Matter.Collision.collides(bodyA, bodyB);
@@ -26,7 +31,9 @@ class leftFlipper {
                 friction: 0.5,
                 restitution: 0.8,
                 angle: Math.PI,
-                inertia: Infinity
+                inertia: Infinity,
+                category: wallCategory,
+                mask: ballCategory
             }
 
             // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
@@ -109,7 +116,9 @@ class rightFlipper {
                 friction: 0.5,
                 restitution: 0,
                 angle: Math.PI,
-                inertia: Infinity
+                inertia: Infinity,
+                category: wallCategory,
+                mask: ballCategory
             }
 
             // creatopm of the left and right body for the flippers in options they will be rounded so they dont appear as flat rectangles
@@ -161,9 +170,7 @@ class rightFlipper {
                 Matter.Body.rotate(this.bodyr, 0, this.pivotr);
             }
             else if (!keyIsDown(RIGHT_ARROW)) {
-                console.log(this.bodyr.angle)
                 Matter.Body.rotate(this.bodyr, -.1, this.pivotr);
-                //this.angleCalc(pivotPoint, rotationAngle);
             } 
         
     

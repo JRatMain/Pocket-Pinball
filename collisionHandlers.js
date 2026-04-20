@@ -21,3 +21,4 @@ function sensorRect(x, y, w, h, sensorName, rotation = 0) {
     Matter.Composite.add(world, this.body);
 
 }
+

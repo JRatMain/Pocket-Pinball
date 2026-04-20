@@ -53,6 +53,15 @@
     World.add(world, constraint);
 
   }
+  function bumpCollision(ball, bumper) {
+    if(Matter.Collision.collides(ball, bumper)) {
+      console.log("vccc")
+    }
+    else {
+
+    }
+
+  }
 
   function createMouseConstrain(canvas) {
     mouse = Matter.Mouse.create(canvas.elt) // this ties the matter.mouse object to the p5 canvas
@@ -143,6 +152,14 @@
     objs.push(bumperF);
     objs.push(bumperG);
     objs.push(bumperH); 
+     bumpers.push(bumperA);
+    bumpers.push(bumperB);
+    bumpers.push(bumperC);
+    bumpers.push(bumperD);
+    bumpers.push(bumperE);
+    bumpers.push(bumperF);
+    bumpers.push(bumperG);
+    bumpers.push(bumperH); 
 
 
       //ground = Bodies.rectangle(200, height, width, 10, {isStatic: true});
@@ -156,15 +173,18 @@
     for (var i = 0; i < objs.length; i++) {
       objs[i].show();
       gameball.show();  
+      
       // code used to restrain flippers positions, needs work
       
     }
+
     flipperL.show();
     flipperR.show(); 
     flipperL.pressed();
     flipperR.pressed();
     ballout_bool = detectCol(gameball.body, ballout.body)
     console.log(ballout_bool)
+    
       if (mouseIsPressed) {
       isPressed = true;
     }
