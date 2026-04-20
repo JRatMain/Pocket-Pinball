@@ -37,11 +37,10 @@
 
   // Function to recreate constraint every time the ball is lost
   function createConstraint() {
-    constrainCenter = new ConstraintOrb(780, 400, 30);
-    gameball = new Ball(780, 400, 30);
+    gameball = new Ball(740, 530, 30);
     
     var constraintOptions = {
-      pointA: {x: 500, y: 300},
+      pointA: {x: 740, y: 490},
       bodyB: gameball.body,
       length: 0,
       stiffness: 0.05
@@ -78,7 +77,7 @@
     world = engine.world;
     Runner.run(engine);
 
-    engine.constraintIterations = 10;
+    engine.constraintIterations = 20;
     engine.positionIterations = 20;
     engine.velocityIterations = 20;
 
@@ -120,18 +119,19 @@
     // game walls
     var wallL = new staticRect(0, 0, 20, 1024);
     var wallR = new staticRect(790, 0, 20, 1024);
-    var chuteBorderL = new staticRect(700, 150, 10, 1024);
+    var ceiling = new staticRect(400, -10, 800, 30, 0, 0, CENTER);
+    var chuteBorderL = new staticRect(680, 175, 20, 1024);
+    var chuteAngle = new staticRect(750, -20, 30, 200, 255, 2.1, CENTER)
 
-    // triangle to make sure the ball doesnt fall back down the chute
-    var chuteAngle = new staticTriangle(700, 0, 780, 0, 780, 100, 0);
 
     // adding objects to a list to add to the world, needs to be renamed
     objs.push(wallL);
     objs.push(wallR);
+    objs.push(ceiling);
+    objs.push(chuteAngle);
     objs.push(flipperRampL)
     objs.push(flipperRampR)
     objs.push(chuteBorderL);
-    objs.push(chuteAngle);
     objs.push(bumperA);
     objs.push(bumperB);
     objs.push(bumperC);
