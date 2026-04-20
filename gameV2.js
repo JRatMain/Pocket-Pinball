@@ -37,8 +37,8 @@
 
   // Function to recreate constraint every time the ball is lost
   function createConstraint() {
-    constrainCenter = new ConstraintOrb(550, 450, 30);
-    gameball = new Ball(500, 500, 30);
+    constrainCenter = new ConstraintOrb(780, 400, 30);
+    gameball = new Ball(780, 400, 30);
     
     var constraintOptions = {
       pointA: {x: 500, y: 300},
@@ -119,7 +119,7 @@
 
     // game walls
     var wallL = new staticRect(0, 0, 20, 1024);
-    var wallR = new staticRect(780, 0, 20, 1024);
+    var wallR = new staticRect(790, 0, 20, 1024);
     var chuteBorderL = new staticRect(700, 150, 10, 1024);
 
     // triangle to make sure the ball doesnt fall back down the chute
@@ -168,6 +168,11 @@
     if (!mouseIsPressed & isPressed) {
       //Matter.Composite.remove(world, constraint);
       constraint.bodyB = null;
+      isPressed = false;
+    }
+    if (ballout_bool) {
+      createConstraint()
+      ballout_bool = false
     }
 
     stroke(255);
