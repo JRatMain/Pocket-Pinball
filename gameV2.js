@@ -20,7 +20,10 @@
   var world;
 
   var obstacles = [];
+  // list to hold all objects
   var objs = [];
+  // list to hold bumpers for collision detection and calculation of score and speed
+  var bumpers = [];
   var flipperL, flipperR;
 
   var ground;
