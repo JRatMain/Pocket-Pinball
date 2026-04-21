@@ -65,11 +65,23 @@
           console.log("collision!")
           let collision = pair.collision;
           if (collision.normal.x > 0) {
+            if (collision.normal.y < 0) {
+              Matter.Body.applyForce(gameball.body, gameball.body.position, {x:0,y:-220})
+              console.log("up!")
+            }else {
             console.log("left!")
-            Matter.Body.applyForce(gameball,-50) // this needs fixing
+            Matter.Body.applyForce(gameball.body, gameball.body.position, {x:-222.5,y:0})
+            }
             score += 100
+            
           } else if (collision.normal.x < 0) {
-            console.log("right!")
+            if (collision.normal.y > 0) {
+              Matter.Body.applyForce(gameball.body, gameball.body.position, {x:0,y:220})
+              console.log("down!")
+            } else {
+              console.log("right!")
+              Matter.Body.applyForce(gameball.body, gameball.body.position, {x:222.5,y:0})
+            }
             score += 100
           }
         }
