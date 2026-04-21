@@ -13,7 +13,7 @@
   var mouse
   var mouseConstraint
 
-
+ var score = 0
 
   var engine;
   var box1;
@@ -58,15 +58,31 @@
       var pairs = event.pairs; // copies the pairs so they can be accessed
       pairs.forEach(pair => {
         if (pair.bodyA.label == 'ball' & pair.bodyB.label == 'Circle Body' || 
-          pair.bodyA.label == 'Circle Body' & pair.bodyB.label == 'ball' 
+          pair.bodyA.label == 'Circle Body' & pair.bodyB.label == 'ball' & !pair.handled 
         ) {
+          pair.handled = true
           console.log("collision!")
+          let collision = pair.collision;
+          if (collision.normal.x > 0) {
+            console.log("left!")
+            score += 100
+          } else if (collision.normal.x < 0) {
+            console.log("right!")
+            score += 100
+          }
         }
       })
     })
 
-  }
-
+    Matter.Events.on(engine, 'collisionEnd', function(event) {
+      var pairs = event.pairs; // copies the pairs so they can be accessed
+      pairs.forEach(pair => {
+        if (pair.handled) {
+          pair.handled = false
+        }
+    })
+  })
+}
   function createMouseConstrain(canvas) {
     mouse = Matter.Mouse.create(canvas.elt) // this ties the matter.mouse object to the p5 canvas
     
@@ -84,7 +100,8 @@
   function setup() {
     let canvas = createCanvas(800, 1024);
     canvas.pixelRatio = pixelDensity();
-
+    textSize(14);
+    textAlign(CENTER, CENTER)
     
 
     // initialization of variables to make Matter methods easier to call
@@ -174,12 +191,11 @@
   function draw() {
     background(220);
     Engine.update(engine);
+    s = 'Score will be here ' + score
+    text(s, 100, 14)
     for (var i = 0; i < objs.length; i++) {
       objs[i].show();
       gameball.show();  
-      
-      // code used to restrain flippers positions, needs work
-      
     }
 
     flipperL.show();
