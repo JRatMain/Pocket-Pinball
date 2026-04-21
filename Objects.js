@@ -72,7 +72,7 @@ function Bumpers(x, y, r, color = 255) {
     friction: 0.5,
     restitution: 0.8,
     angle: Math.PI,
-    label: "bumper",
+    label: 'bumper',
     category: bumperCategory,
     mask: ballCategory
   }

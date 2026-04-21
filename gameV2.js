@@ -53,13 +53,17 @@
     World.add(world, constraint);
 
   }
-  function bumpCollision(ball, bumper) {
-    if(Matter.Collision.collides(ball, bumper)) {
-      console.log("vccc")
-    }
-    else {
-
-    }
+  function bumpCollision() {
+    Matter.Events.on(engine, 'collisionStart', function(event) {
+      var pairs = event.pairs; // copies the pairs so they can be accessed
+      pairs.forEach(pair => {
+        if (pair.bodyA.label == 'ball' & pair.bodyB.label == 'Circle Body' || 
+          pair.bodyA.label == 'Circle Body' & pair.bodyB.label == 'ball' 
+        ) {
+          console.log("collision!")
+        }
+      })
+    })
 
   }
 
@@ -184,12 +188,13 @@
     flipperR.pressed();
     ballout_bool = detectCol(gameball.body, ballout.body)
     console.log(ballout_bool)
-    
+      bumpCollision();
       if (mouseIsPressed) {
       isPressed = true;
     }
     if (!mouseIsPressed & isPressed) {
-      //Matter.Composite.remove(world, constraint);
+      //Matter.Composite.remove(world, constraint);\
+      
       constraint.bodyB = null;
       isPressed = false;
     }
