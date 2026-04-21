@@ -14,6 +14,7 @@
   var mouseConstraint
 
  var score = 0
+ var score = 0
 
   var engine;
   var box1;
@@ -84,6 +85,7 @@
     })
   })
 }
+  
   function createMouseConstrain(canvas) {
     mouse = Matter.Mouse.create(canvas.elt) // this ties the matter.mouse object to the p5 canvas
     
@@ -103,6 +105,7 @@
     canvas.pixelRatio = pixelDensity();
     textSize(14);
     textAlign(CENTER, CENTER)
+    
     
 
     // initialization of variables to make Matter methods easier to call
