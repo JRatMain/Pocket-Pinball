@@ -14,56 +14,61 @@
   var mouseConstraint
 
  var score = 0
- var score = 0
+ var lives = 3
 
   var engine;
-  var box1;
   var world;
 
-  var obstacles = [];
   // list to hold all objects
   var objs = [];
   // list to hold bumpers for collision detection and calculation of score and speed
   var bumpers = [];
+
+  // initialization of flippers
   var flipperL, flipperR;
 
-  var ground;
-  var staticObj = {isStatic: true}
+  // gameball and gameball constraint initialization
   var gameball;
-  var constrainCenter;
   var constraint;
 
 
-  // sensor detections
-  var ballout;
+  // sensor objects
+  var ballout
+  var chuteDrop
 
-  var ballout_bool;
+  // sensor booleans
+  var ballout_bool
+  var chuteDrop_bool
 
   // Function to recreate constraint every time the ball is lost
   function createConstraint() {
     gameball = new Ball(740, 530, 30);
     
     var constraintOptions = {
-      pointA: {x: 740, y: 490},
-      bodyB: gameball.body,
-      length: 0,
-      stiffness: 0.05
+      pointA: {x: 740, y: 490}, // sets point for gameball to be attracted to
+      bodyB: gameball.body, // sets the body to the game ball, is attracted to the point above
+      length: 0, // game ball is held right up to the point so there is no wobble
+      stiffness: 0.05 // collision stiffness controls launch force
     }
 
+    // creation and adding code for constraint to add to world instance
     constraint = Constraint.create(constraintOptions);
     World.add(world, constraint);
 
   }
+
+  // This function is designed to handle collisions between the bumpers and the ball, helps with scoring
   function bumpCollision() {
-    Matter.Events.on(engine, 'collisionStart', function(event) {
+    // monitors for the collision start event and grabs each collision pair
+    Matter.Events.on(engine, 'collisionStart', function(event) { 
       var pairs = event.pairs; // copies the pairs so they can be accessed
       pairs.forEach(pair => {
-        if (pair.bodyA.label == 'ball' & pair.bodyB.label == 'Circle Body' || 
+        if (pair.bodyA.label == 'ball' & pair.bodyB.label == 'Circle Body' ||            // the label is checked to ensure that it is indeed the ball and the bumpers that are colliding so this code does not execute for any walls 
           pair.bodyA.label == 'Circle Body' & pair.bodyB.label == 'ball' & !pair.handled 
         ) {
-          pair.handled = true
-          console.log("collision!")
-          let collision = pair.collision;
+          pair.handled = true // this is set so that the collision is not handled multiple time giving erroneous data
+          console.log("collision!") 
+          let collision = pair.collision; // gets the collision data and is used below to calculate normals and tell which side the collision is happening on
           if (collision.normal.x > 0) {
             if (collision.normal.y < 0) {
               Matter.Body.applyForce(gameball.body, gameball.body.position, {x:0,y:-220})
@@ -72,7 +77,7 @@
             console.log("left!")
             Matter.Body.applyForce(gameball.body, gameball.body.position, {x:-222.5,y:0})
             }
-            score += 100
+            score += 100 // score added from collision
             
           } else if (collision.normal.x < 0) {
             if (collision.normal.y > 0) {
@@ -82,12 +87,12 @@
               console.log("right!")
               Matter.Body.applyForce(gameball.body, gameball.body.position, {x:222.5,y:0})
             }
-            score += 100
+            score += 100 // score added from collision
           }
         }
       })
     })
-
+    // this sub function sets the pair.handled bool to false for the next collision
     Matter.Events.on(engine, 'collisionEnd', function(event) {
       var pairs = event.pairs; // copies the pairs so they can be accessed
       pairs.forEach(pair => {
@@ -98,6 +103,7 @@
   })
 }
   
+  // this is the function that allows a user to use their mouse or touchscreen to interact with the game
   function createMouseConstrain(canvas) {
     mouse = Matter.Mouse.create(canvas.elt) // this ties the matter.mouse object to the p5 canvas
     
@@ -112,6 +118,7 @@
     World.add(world, mouseConstraint)
   }
 
+  // p5.js setup code, this will be our frontend library, matter.js will be our physics library
   function setup() {
     let canvas = createCanvas(800, 1024);
     canvas.pixelRatio = pixelDensity();
@@ -126,6 +133,7 @@
     world = engine.world;
     Runner.run(engine);
 
+    // settings for engine iterations to allow for smoother handling
     engine.constraintIterations = 20;
     engine.positionIterations = 20;
     engine.velocityIterations = 20;
@@ -142,19 +150,19 @@
 
 
     
-    //const staticREct = new staticRect(200, 1000, 200, 75);
+    // flipper declaration
     flipperL = new leftFlipper(225, 950, 200, 50, world);
     flipperR = new rightFlipper(550, 950, 200, 50, world);
-    //const staticREct2 = new staticRect(450, 1000, 200, 75);
+
+    // ramp declaration
     var flipperRampL = new staticRect(70, 800, 175, 25, 255, 3.8, CENTER)
     var flipperRampR = new staticRect(680, 850, 50, 25, 255, 2, CENTER)
-    ballout = new sensorRect(500, 1000, 1000, 11, 'firstsensor')
+
+    // sensor declaration
+    ballout = new sensorRect(500, 1200, 3000, 11, 'firstsensor')
+    chuteDrop = new sensorRect(775, 850 , 50, 10, 'balldropped')
 
 
-    
-
-    //World.add(world, staticREct);
-    //World.add( world, staticREct2);
     // Creation of bumper objects in the game for player to interact with
     var bumperA = new Bumpers(200, 150, 30); 
     var bumperB = new Bumpers(500, 150, 30); 
@@ -168,18 +176,18 @@
     // game walls
     var wallL = new staticRect(0, 0, 20, 1024);
     var wallR = new staticRect(790, 0, 20, 1024);
-    var ceiling = new staticRect(400, -10, 800, 30, 0, 0, CENTER);
+    var ceiling = new staticRect(400, -10, 800, 30, 255, 0, CENTER);
     var chuteBorderL = new staticRect(680, 175, 20, 1024);
     var chuteAngle = new staticRect(750, -20, 30, 200, 255, 2.1, CENTER)
 
 
-    // adding objects to a list to add to the world, needs to be renamed
+    // adding objects to a list to add to the world
+    objs.push(flipperRampL)
+    objs.push(flipperRampR)
     objs.push(wallL);
     objs.push(wallR);
     objs.push(ceiling);
     objs.push(chuteAngle);
-    objs.push(flipperRampL)
-    objs.push(flipperRampR)
     objs.push(chuteBorderL);
     objs.push(bumperA);
     objs.push(bumperB);
@@ -206,35 +214,48 @@
 
   function draw() {
     background(220);
-    Engine.update(engine);
-    s = 'Score will be here ' + score
-    text(s, 100, 14)
-    for (var i = 0; i < objs.length; i++) {
-      objs[i].show();
-      gameball.show();  
-    }
+    Engine.update(engine); // matter.js engine updates
+    if (lives > -1){
+      s = 'Score will be here: ' + score
+      l = 'Balls left: ' + lives
+      text(s, 100, 14)
+      text(l, 100, 30)
+      for (var i = 0; i < objs.length; i++) {
+        objs[i].show();
+        gameball.show();  
+      }
 
-    flipperL.show();
-    flipperR.show(); 
-    flipperL.pressed();
-    flipperR.pressed();
-    ballout_bool = detectCol(gameball.body, ballout.body)
-    console.log(ballout_bool)
-      bumpCollision();
-      if (mouseIsPressed) {
-      isPressed = true;
-    }
-    if (!mouseIsPressed & isPressed) {
-      //Matter.Composite.remove(world, constraint);\
-      
-      constraint.bodyB = null;
-      isPressed = false;
-    }
-    if (ballout_bool) {
-      createConstraint()
-      ballout_bool = false
-    }
+      flipperL.show();
+      flipperR.show(); 
+      flipperL.pressed();
+      flipperR.pressed();
+      chuteDrop_bool = detectCol(gameball.body, chuteDrop.body)
+      ballout_bool = detectCol(gameball.body, ballout.body)
+      console.log(ballout_bool)
+        bumpCollision();
+        if (mouseIsPressed) {
+        isPressed = true;
+      }
+      if (!mouseIsPressed & isPressed) {
+        //Matter.Composite.remove(world, constraint);\
+        
+        constraint.bodyB = null;
+        isPressed = false;
+      }
+      if(chuteDrop_bool) {
+        createConstraint()
+      }
+      else if (ballout_bool) {
+        createConstraint()
+        lives -= 1
+        ballout_bool = false
+      }
 
-    stroke(255);
-    strokeWeight(5);
+      stroke(255);
+      strokeWeight(5);
+    } else{
+      textSize(60)
+      text('Game Over', canvas.width/2, canvas.height / 2)
+    }
+    
   }
