@@ -135,8 +135,8 @@
 
     // settings for engine iterations to allow for smoother handling
     engine.constraintIterations = 20;
-    engine.positionIterations = 20;
-    engine.velocityIterations = 20;
+    engine.positionIterations = 5;
+    engine.velocityIterations = 5;
 
     stroke(255);
     strokeWeight(5);
@@ -151,8 +151,8 @@
 
     
     // flipper declaration
-    flipperL = new leftFlipper(225, 950, 200, 50, world);
-    flipperR = new rightFlipper(550, 950, 200, 50, world);
+    flipperL = new leftFlipper(225, 950, 205, 50, world);
+    flipperR = new rightFlipper(550, 950, 205, 50, world);
 
     // ramp declaration
     var flipperRampL = new staticRect(70, 800, 175, 25, 255, 3.8, CENTER)
